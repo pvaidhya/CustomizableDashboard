@@ -30,6 +30,8 @@ export class BaseComponentComponent implements OnInit {
     this.getComponentDetails();
   }
 
+
+  //get your user specific data tiles from the api
   getDashboardComponents() {
 
     this.dashboardTiles.push({ title: "Chart1", size: "col-md-6", position: 1, uniqueId: "RS_00" + 1, componentName: "Chart1Component" });
@@ -39,6 +41,7 @@ export class BaseComponentComponent implements OnInit {
     }, 1000);
   }
 
+  // render the components and their descriptions here.
   getComponentDetails() {
     this.items = [
       {
@@ -76,20 +79,25 @@ export class BaseComponentComponent implements OnInit {
     ];
   }
 
+  //when right-clicked on a div
   openFolderModel = (event) => {
     debugger;
     this.BuildComponents(event.menuItem.data.componentName, event.menuItem.data.size);
   }
 
+  //before event for the right click.
   onBefore = (event: BeforeMenuEvent) => {
     event.open(this.items);
   };
 
+
+  //adds the new components
   AddComponents(event) {
     var parentId = event.target.parentElement.id;
     this.ResolveComponents(parentId, null);
   }
 
+  //resolves the components dynamically
   ResolveComponents(parentId, componentName) {
     var factory: any;
     var ref: any;
@@ -123,13 +131,15 @@ export class BaseComponentComponent implements OnInit {
     }
   }
 
+
+  //builds the components
   BuildComponents(componentName, size) {
+    debugger;
     if (componentName != null) {
       var newPosition = this.dashboardTiles.length + 1;
       var result = { title: "Temperature Component", size: size, position: newPosition, uniqueId: "RS_00" + newPosition, componentName: componentName };
       this.dashboardTiles.push(result);
-      //this.updateDashboardConfigurations(true, result.position, result.componentName);
-      this.ResolveComponents(result.position, result.componentName);
+      this.updateDashboardConfigurations(true, result.position, result.componentName);
     }
     else {
       debugger;
@@ -139,14 +149,17 @@ export class BaseComponentComponent implements OnInit {
     }
   }
 
+  //updates the styles wheb the drag starts
   onDragStart() {
     this.enableDeleteOnDrag = false;
   }
 
+  //updates the styles after the drag ends
   onDragEnd() {
     this.enableDeleteOnDrag = true;
   }
 
+  //updates the droped event into the tiles array and resolves the components
   onComponentDrop(dragTarget: DropEvent, droppedElementPosition) {
     debugger;
     var draggedElement: any;
@@ -171,9 +184,9 @@ export class BaseComponentComponent implements OnInit {
     localTilesArray.push(draggedElement);
     localTilesArray.push(dropElement);
     this.dashboardTiles = _.sortBy(localTilesArray, 'position');
-    this.updateDashboardConfigurations(false, null, null);
   }
 
+  //removes the items by index
   removeItem(item: any, list: Array<any>) {
     let index = list.map(function (e) {
       return e.uniqueId
@@ -181,6 +194,7 @@ export class BaseComponentComponent implements OnInit {
     list.splice(index, 1);
   }
 
+  //deletes the items when we drag and drop
   onDeleteDrop(e: DropEvent) {
     this.removeItem(e.dragData, this.dashboardTiles);
     this.enableDeleteOnDrag = true;
@@ -188,6 +202,8 @@ export class BaseComponentComponent implements OnInit {
     this.updateDashboardConfigurations(false, null, null);
   }
 
+
+  //re-orders the positions once we drag and drop.
   reOrderPositions() {
     this.dashboardTiles = _.sortBy(this.dashboardTiles, 'position');
     var i = 1;
@@ -197,9 +213,8 @@ export class BaseComponentComponent implements OnInit {
     });
   }
 
+  //updates the column size of the div's
   changeColumnSize(tilePosition) {
-
-    debugger;
     this.dashboardTiles.forEach(tile => {
       if (tile.position == tilePosition) {
         tile.size = (tile.size == "col-md-12") ? "col-md-6" : "col-md-12";
@@ -208,11 +223,10 @@ export class BaseComponentComponent implements OnInit {
     });
   }
 
+  //update your service or user configuration api here
   updateDashboardConfigurations(isNewAdd, position, componentName) {
-
-    //this.ResolveComponents(position, componentName); 
     if (isNewAdd) {
-      this.ResolveComponents(position, componentName);
+      setTimeout(() => { this.ResolveComponents(position, componentName); 0 }, 1000);
     }
   }
 }
