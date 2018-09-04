@@ -1,4 +1,4 @@
-# Customizable Dashboard (Tech Hint : Dynamic component resolvers.) :
+# Customizable Dashboard (Tech Hint : Dynamic Component Resolvers) :
 
 Demo : https://pvaidhyacomponentresolvers.netlify.com/#/
 
